@@ -10,7 +10,8 @@ def plot_eval_over_n(max_n: int):
         out1 = main.first_integration(i)
         outputs.append([out1])
 
-    plt.plot(outputs)
+    labels = np.arange(100, max_n, 100)
+    plt.plot(labels, outputs, 'r')
     plt.show()
 
 
