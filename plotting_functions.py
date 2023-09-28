@@ -35,5 +35,32 @@ def plot_more_efficient(integrand: typing.Callable[[np.ndarray, np.ndarray], np.
     plt.show()
 
 
+def plot_unif_norm_convergences(integrand: typing.Callable[[np.ndarray, np.ndarray], np.ndarray],
+                                max_n: int, samples: int):
+    outputs_unif = []
+    outputs_norm = []
+    running_total_samples = samples
+    running_sum_unif = 0.0
+    running_sum_norm = 0.0
+    for _ in np.arange(100, max_n, samples):
+        out_unif = main.first_integration(integrand, stats.uniform, 0.0, 1.0, samples)
+        out_norm = main.first_integration(integrand, stats.norm, 0.0, 1.0, samples)
+        out_unif *= float(samples)
+        out_norm *= float(samples)
+        running_sum_unif += out_unif
+        running_sum_norm += out_norm
+        running_total_samples += samples
+
+        out_unif = running_sum_unif / float(running_total_samples)
+        out_norm = running_sum_norm / float(running_total_samples)
+        outputs_unif.append([out_unif])
+        outputs_norm.append([out_norm])
+
+    labels = np.arange(100, max_n, samples)
+    plt.plot(labels, outputs_unif, 'r')
+    plt.plot(labels, outputs_norm, 'g')
+    plt.show()
+
+
 if __name__ == "__main__":
-    plot_more_efficient(main.func1, stats.norm, 20000, samples=100)
+    plot_unif_norm_convergences(main.func1, 5000, samples=100)

@@ -28,21 +28,22 @@ def func1(x, y):
 
 
 def first_integration(integrand: typing.Callable[[np.ndarray, np.ndarray], np.ndarray],
-                      density: stats.rv_continuous, lower_bound: float,
-                      upper_bound: float, n: int = 10000) -> float:
+                      density: stats.rv_continuous, lower_bound: float = 0.0,
+                      upper_bound: float = 1.0, n: int = 100000) -> float:
 
     vec_x = naive_points_generation(density, lower_bound, upper_bound, n)
     vec_y = naive_points_generation(density, lower_bound, upper_bound, n)
 
     _eval_top = integrand(vec_x, vec_y)
     _eval_bottom = density.pdf(vec_x) * density.pdf(vec_y)
+    correction_term = (density.cdf(upper_bound) - density.cdf(lower_bound))**2
 
-    _eval = _eval_top / _eval_bottom
+    _eval = _eval_top / _eval_bottom * correction_term
     _eval = _eval.mean()
 
     return _eval
 
 
 if __name__ == "__main__":
-    out = first_integration(func1, stats.norm, 0, 1, n=100000)
+    out = first_integration(func1, stats.norm)
     print(out)
