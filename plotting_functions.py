@@ -15,5 +15,22 @@ def plot_eval_over_n(max_n: int):
     plt.show()
 
 
+def plot_more_efficient(max_n: int, samples: int):
+    outputs = []
+    running_total_samples = samples
+    running_sum = 0.0
+    for _ in np.arange(100, max_n, samples):
+        out1 = main.first_integration(samples)
+        out1 *= float(samples)
+        running_sum += out1
+        running_total_samples += samples
+        out1 = running_sum / float(running_total_samples)
+        outputs.append([out1])
+
+    labels = np.arange(100, max_n, samples)
+    plt.plot(labels, outputs, 'r')
+    plt.show()
+
+
 if __name__ == "__main__":
-    plot_eval_over_n(100000)
+    plot_more_efficient(20000, samples=100)
