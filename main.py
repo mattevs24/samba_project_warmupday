@@ -1,4 +1,5 @@
 import numpy as np
+import typing
 
 
 def rand_vec(n: int) -> np.ndarray:
@@ -10,19 +11,19 @@ def rand_vec(n: int) -> np.ndarray:
     return np.random.uniform(size=n)
 
 
-def first_integration(n: int = 10000) -> float:
+def func1(x, y):
+    return 1.0 / (1.0 + np.sin(x)**2 + np.sin(y)**2)
 
-    def func1(x, y):
-        return 1.0 / (1.0 + np.sin(x)**2 + np.sin(y)**2)
+
+def first_integration(integrand: typing.Callable[[np.ndarray, np.ndarray], np.ndarray], n: int = 10000) -> float:
 
     vec_x, vec_y = rand_vec(n), rand_vec(n)
-
-    _eval = func1(vec_x, vec_y)
+    _eval = integrand(vec_x, vec_y)
     _eval = _eval.mean()
 
     return _eval
 
 
 if __name__ == "__main__":
-    out = first_integration()
+    out = first_integration(func1, n=10000)
     print(out)

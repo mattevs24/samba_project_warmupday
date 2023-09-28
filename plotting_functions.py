@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import typing
 
 import main
 
@@ -15,12 +16,12 @@ def plot_eval_over_n(max_n: int):
     plt.show()
 
 
-def plot_more_efficient(max_n: int, samples: int):
+def plot_more_efficient(integrand: typing.Callable[[np.ndarray, np.ndarray], np.ndarray], max_n: int, samples: int):
     outputs = []
     running_total_samples = samples
     running_sum = 0.0
     for _ in np.arange(100, max_n, samples):
-        out1 = main.first_integration(samples)
+        out1 = main.first_integration(integrand, samples)
         out1 *= float(samples)
         running_sum += out1
         running_total_samples += samples
@@ -33,4 +34,4 @@ def plot_more_efficient(max_n: int, samples: int):
 
 
 if __name__ == "__main__":
-    plot_more_efficient(20000, samples=100)
+    plot_more_efficient(main.func1, 20000, samples=100)
