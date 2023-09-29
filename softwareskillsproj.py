@@ -22,10 +22,10 @@ estimate=accum/float(N)
 
 ##analytical solution
 
-#x = sp.Symbol("x")
-#y = sp.Symbol("y")
+x = sp.Symbol("x")
+y = sp.Symbol("y")
 #float(sp.integrate(1/(1+ sp.sin(x**2) + sp.sin(y**2)), (x, 0, 1), (y, 0, 1))
-
+#
 N = 100
 accum = 0
 for i in range(N):
@@ -33,18 +33,20 @@ for i in range(N):
     y = np.random.normal(0, 1)
     accum += x**2 +3*x*y -y**4
 known_estimate=accum/float(N)
-print(known_estimate)
+#print(known_estimate)
 
-x=np.random.normal(0,1,100)
-if abs(x[i])>1:
-    x.remove(x[i])
+
 
     
-print(x)
+
 #print(y)
 
 #x = sp.Symbol("x")
 #y = sp.Symbol("y")
 #print(float(sp.integrate((x**2) + (3*x*y) - (y**4), (x, 0, 1), (y, 0, 1))))
 
+import scipy.integrate as integrate
+from scipy.integrate import dblquad
+area = dblquad(lambda x, y: 1/(1+ np.sin(x)**2 + np.sin(y)**2), 0, 1, 0,1)
+print(area)
 
